@@ -31,7 +31,7 @@ from dash import (
 )
 from dash_extensions.enrich import (
     DashProxy,
-    ServersideOutput,
+    Serverside,
     ServersideOutputTransform,
 )
 from trace_updater import TraceUpdater
@@ -147,7 +147,7 @@ app.layout = serve_layout()
         Output("coarse-graph", "figure"),
         Output("plotly-resampler-graph", "figure"),
         # Output("linked-subplots", 'data'),
-        ServersideOutput("store", "data"),
+        Output("store", "data"),
     ],
     [Input("plot-button", "n_clicks"), *get_selector_states(len(name_folder_list))],
     prevent_initial_call=True,
@@ -237,7 +237,7 @@ def construct_plot_graph(_, *folder_list):
                     orientation="h", y=1.01, xanchor="right", x=1, font_size=15
                 ),
             )
-            return coarse_fig, dynamic_fig, dynamic_fig
+            return coarse_fig, dynamic_fig, Serverside(dynamic_fig)
     else:
         return no_update
 
